@@ -48,6 +48,15 @@
     key_file: "{{ openhab_config_ssh_keyfile }}"
   when: openhab_config_repo != None
 
+- name: copy ~> configuration source
+  copy:
+    src: "{{ openhab_config_source }}"
+    dest: "{{ openhab_conf }}"
+    owner: "{{ openhab_config_owner }}"
+    group: "{{ openhab_config_group }}"
+    backup: yes
+  when: openhab_config_source != None
+
 - name: file ~> ensure userdata dir exists
   file:
     path: "{{ openhab_userdata }}"
