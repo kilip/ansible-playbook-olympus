@@ -1,0 +1,74 @@
+- name: "phpbrew ~> configure packages for {{ ansible_os_family }}"
+  include_vars: "phpbrew-{{ ansible_os_family|lower }}.yml"
+
+- name: phpbrew ~> check existing installation
+  stat:
+    path: "{{ zeus_home }}/.phpbrew"
+  register: _phpbrew_dir
+
+- name: phpbrew ~> set phpbrew install mode
+  changed_when: false
+  failed_when: false
+  set_fact:
+    phpbrew_install: no
+  when: _phpbrew_dir.stat.exists
+
+- name: phpbrew ~> install requirements
+  package:
+    name: "{{ phpbrew_packages }}"
+    state: present
+
+- name: phpbrew ~> downloading phpbrew
+  get_url:
+    url: https://github.com/phpbrew/phpbrew/releases/latest/download/phpbrew.phar
+    dest: "{{ phpbrew_dest }}"
+    mode: u=rwx,g=rwx,o=rx
+  when: phpbrew_install
+
+- name: phpbrew ~> initialize phpbrew
+  become: yes
+  become_user: "{{ zeus_user }}"
+  command: "{{ phpbrew_dest }} init"
+  changed_when: false
+  args:
+    creates: "{{ zeus_home }}/.phpbrew"
+  when: phpbrew_install
+
+- name: phpbrew ~> setup bash
+  become: yes
+  become_user: "{{ zeus_user }}"
+  lineinfile:
+    path: "{{ zeus_home }}/.bashrc"
+    regexp: 'source.*\.phpbrew/bashrc'
+    line: "[[ -e ~/.phpbrew/bashrc ]] && source ~/.phpbrew/bashrc"
+  when: phpbrew_install
+
+- name: phpbrew ~> setup zsh
+  become: yes
+  become_user: "{{ zeus_user }}"
+  lineinfile:
+    path: "{{ ohmyzsh_zshrc }}"
+    regexp: 'source.*\.phpbrew/bashrc'
+    line: "[[ -e ~/.phpbrew/bashrc ]] && source ~/.phpbrew/bashrc"
+  when: ohmyzsh
+
+# patch curl
+# sudo ln -s /usr/include/x86_64-linux-gnu/curl /usr/include/curl
+- name: phpbrew ~> create curl lib symlink for older php build
+  file:
+    src: /usr/include/x86_64-linux-gnu/curl
+    dest: /usr/include/curl
+    state: link
+  when: ansible_os_family == 'Debian'
+
+- name: phpbrew ~> create icu-config bin for older php build
+  template:
+    dest: /usr/bin/icu-config
+    src: icu-config.sh
+    mode: u+x,g+x,o+x
+
+- name: phpbrew ~> default config
+  template:
+    dest: "{{ zeus_home }}/.phpbrew/config.yaml"
+    src: phpbrew.config.yml
+    mode: u+r,g+r,o+r

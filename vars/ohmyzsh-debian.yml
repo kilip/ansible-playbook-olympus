@@ -1,0 +1,5 @@
+ohmyzsh_packages:
+  - zsh
+  - zsh-autosuggestions
+  - zsh-antigen
+  - zsh-syntax-highlighting

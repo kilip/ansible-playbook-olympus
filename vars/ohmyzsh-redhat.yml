@@ -1,0 +1,3 @@
+ohmyzsh_packages:
+  - zsh
+  - zsh-syntax-highlighting

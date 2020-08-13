@@ -1,0 +1,15 @@
+galaxy_info:
+  author: kilip
+  role_name: zeus
+  description: Ansible Role zeus
+  company: DoyoLabs
+  license: MIT
+  min_ansible_version: 2.4
+  platforms:
+  - name: Ubuntu
+    versions:
+    - focal
+    - bionic
+  galaxy_tags: []
+
+dependencies: []

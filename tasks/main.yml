@@ -1,0 +1,51 @@
+---
+- name: "configure package manager for RedHat"
+  import_tasks: "./os/packman-RedHat.yml"
+  when: ansible_os_family == 'RedHat'
+
+- name: "configure package manager for Debian"
+  import_tasks: "./os/packman-Debian.yml"
+  when: ansible_os_family == 'Debian'
+
+- import_tasks: util.yml
+
+- name: include user task
+  import_tasks: user.yml
+
+- import_tasks: gpg.yml
+  when: gpg
+
+- import_tasks: phpstorm.yml
+  when: phpstorm
+
+- import_tasks: git.yml
+  when: git
+
+- import_tasks: ohmyzsh.yml
+  when: ohmyzsh
+
+- import_tasks: regolith.yml
+  when: regolith and ansible_os_family=='Debian'
+
+- import_tasks: phpbrew.yml
+  when: phpbrew
+
+- import_tasks: composer.yml
+  when: composer
+
+- import_tasks: rvm.yml
+  become: yes
+  become_user: "{{ zeus_user }}"
+  when: rvm
+
+- import_tasks: docker.yml
+  when: docker
+
+- import_tasks: virtualbox.yml
+  when: vbox and ansible_os_family=='Debian'
+
+- import_tasks: chrome.yml
+  when: chrome and ansible_os_family=='Debian'
+
+- import_tasks: nvm.yml
+  when: nvm

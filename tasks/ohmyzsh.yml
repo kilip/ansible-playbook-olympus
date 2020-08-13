@@ -1,0 +1,62 @@
+---
+- name: "ohmyzsh ~> include vars for {{ ansible_os_family }}"
+  include_vars: "ohmyzsh-{{ ansible_os_family|lower }}.yml"
+
+- name: ohmyzsh ~> ensure zsh installed
+  package:
+    state: present
+    name: "{{ item }}"
+  with_items: "{{ ohmyzsh_packages }}"
+
+
+- name: ohmyzsh ~> check ohmyzsh path existence
+  stat:
+    path: "{{ ohmyzsh_path }}"
+  register: ohmyzsh_current
+
+- name: ohmyzsh ~> check installer
+  stat:
+    path: "{{ ohmyzsh_installer }}"
+  register: ohmyzsh_installer_bin
+  changed_when: false
+
+- name: ohmyzsh ~> download installer script
+  get_url:
+    url: "{{ ohmyzsh_installer_url }}"
+    dest: "{{ ohmyzsh_installer }}"
+    mode: 0755
+  when: not ohmyzsh_installer_bin.stat.exists and not ohmyzsh_current.stat.exists
+
+- name: ohmyzsh ~> running installer script
+  become: true
+  become_user: toni
+  command: "sh -c {{ ohmyzsh_installer }}"
+  when: not ohmyzsh_current.stat.exists
+  args:
+    creates: "{{ ohmyzsh_path }}"
+
+- name: ohmyzsh ~> check current shell
+  become: true
+  become_user: "{{ zeus_user }}"
+  command: "echo $SHELL"
+  register: ohmyzsh_shell
+  when: ohmyzsh_change_shell
+  changed_when: false
+
+- name: ohmyzsh ~> change default shell to zsh
+  command: "chsh -s {{ ohmyzsh_zsh_bin }} {{ zeus_user }}"
+  changed_when: false
+  when: ohmyzsh_change_shell and not ohmyzsh_shell.stdout is search('zsh')
+
+- name: ohmyzsh ~> add plugins config
+  lineinfile:
+    path: "{{ ohmyzsh_zshrc }}"
+    regexp: "^plugins$"
+    line: "plugins=({{ ohmyzsh_plugins | join(' ') }})"
+    state: present
+
+- name: ohmyzsh ~> theme settings
+  lineinfile:
+    path: "{{ ohmyzsh_zshrc }}"
+    regexp: "^ZSH_THEME"
+    line: "ZSH_THEME=\"{{ ohmyzsh_theme }}\""

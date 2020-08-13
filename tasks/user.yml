@@ -1,0 +1,13 @@
+- name: group ~> ensure group {{ zeus_group }} exists
+  group:
+    name: "{{ zeus_group }}"
+    state: present
+
+- name: user ~> ensure user {{ zeus_user }} exists
+  user:
+    name: "{{ zeus_user }}"
+    state: present
+    group: "{{ zeus_group }}"
+    create_home: true
+    home: "{{ zeus_home }}"
+    shell: "{{ zeus_user_shell }}"

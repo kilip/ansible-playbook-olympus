@@ -1,0 +1,6 @@
+{% if apt_http_proxy | length %}
+Acquire::http::proxy "{{ apt_http_proxy }}";
+{% endif %}
+{% if apt_https_proxy | length %}
+Acquire::https::proxy "{{ apt_https_proxy }}";
+{% endif %}
