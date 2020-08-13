@@ -1,0 +1,6 @@
+- name: ufw ~> allow mosquitto ports
+  ufw:
+    rule: allow
+    port: "{{ item.port }}"
+    proto: tcp
+  loop: "{{ mqtt_listeners }}"

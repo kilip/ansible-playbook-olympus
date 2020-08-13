@@ -1,0 +1,21 @@
+---
+# defaults file for mosquitto
+
+mqtt_htpasswd_package: apache2-utils
+
+mqtt_configure_firewall: False
+
+mqtt_firewall: ""
+
+mqtt_config_file: /etc/mosquitto/mosquitto.conf
+
+mqtt_password_file: /etc/mosquitto/passwords
+
+_mqtt_password_checksum_file: "/etc/mosquitto/.users.checksum"
+
+mqtt_users: []
+
+mqtt_listeners:
+- port: 1883
+  address: 0.0.0.0
+  options: ""
