@@ -1,16 +1,16 @@
 ---
-- name: packman ~> Enable EPEL Repository on CentOS 8
+- name: pacman ~> Enable EPEL Repository on CentOS 8
   dnf:
     name: epel-release
     state: latest
 
-- name: packman ~> install dnf plugins
+- name: pacman ~> install dnf plugins
   package:
     name:
       - dnf-plugins-core
     state: present
 
-- name: packman ~> enable power tools
+- name: pacman ~> enable power tools
   ini_file:
     path: /etc/yum.repos.d/CentOS-PowerTools.repo
     section: PowerTools
@@ -23,3 +23,9 @@
 - name: update yum cache
   yum:
     update_cache: yes
+
+- name: yum ~> upgrade all packages
+  yum:
+    name: '*'
+    state: latest
+  when: zeus_upgrade_first

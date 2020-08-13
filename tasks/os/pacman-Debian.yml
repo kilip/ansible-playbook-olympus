@@ -4,10 +4,10 @@
     src: apt-proxy.j2
   when: apt_http_proxy|length or apt_https_proxy|length
 
-- name: apt ~> set mirror
+- name: "apt ~> set mirror for {{ ansible_distribution }}"
   template:
     dest: /etc/apt/sources.list
-    src: apt-sources-list.j2
+    src: "sources.list.{{ ansible_distribution }}.j2"
     backup: yes
   when: apt_mirror|length
 

@@ -1,0 +1,15 @@
+- name: prepare ~> enable user configuration
+  set_fact:
+    _zeus_configure_user: yes
+  when: zeus_user|length
+
+- name: prepare ~> check gpg config
+  assert:
+    that: 
+      - gpg_key_id|length > 0
+      - gpg_private_key|length > 0
+    fail_msg: "gpg must configured properly"
+  register: result
+  failed_when: False
+  changed_when: False
+  when: zeus_gpg

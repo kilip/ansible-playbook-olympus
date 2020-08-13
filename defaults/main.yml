@@ -1,22 +1,23 @@
 ---
-zeus_user: root
-zeus_group: root
+zeus_group: "{{ zeus_user }}"
 zeus_home: "/home/{{ zeus_user }}"
 zeus_user_shell: "/usr/bin/zsh"
-zeus_upgrade_first: yes
-zeus_util:
-  - vim
-  - cockpit
-  - gnupg2
+zeus_upgrade_first: no
 
-zeus_util_debian:
-  - nethogs
-  - vlc
-  - nfs-common
-  - transmission
+zeus_gpg: no
+zeus_phpstorm: no
+zeus_git: no
+zeus_ohmyzsh: no
+zeus_regolith: no
+zeus_phpbrew: no
+zeus_composer: no
+zeus_rvm: no
+zeus_docker: no
+zeus_virtualbox: no
+zeus_chrome: no
+zeus_nvm: no
 
-zeus_util_nginx:
-  - nfs-utils
+zeus_util: []
 
 apt_http_proxy: ""
 apt_https_proxy: "{{ apt_http_proxy }}"
@@ -42,10 +43,8 @@ gpg: yes
 gpg_home: "{{ zeus_home }}"
 gpg_user: "{{ zeus_user }}"
 gpg_group: "{{ zeus_group }}"
-gpg_key_id:
-gpg_private_key:
-gpg_passphrase:
-gpg_public_key:
+gpg_key_id: ""
+gpg_private_key: ""
 gpg_temp_dir: "/tmp/gpg"
 gpg_import_key: yes
 
@@ -81,7 +80,7 @@ rvm_version: 'stable'
 rvm_autolib_mode: 3
 rvm_gpg_keys: '409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB'
 rvm_gpg_key_server: 'hkp://pool.sks-keyservers.net'
-rvm_check_for_updates: yes
+rvm_check_for_updates: no
 
 # The GPG alternative key servers
 rvm_gpg_key_servers:
@@ -145,3 +144,6 @@ composer_github_oauth_token: ''
 
 ### Laravel Section
 laravel: no
+
+
+_zeus_configure_user: no
