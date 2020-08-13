@@ -1,0 +1,9 @@
+- name: ensure influxdb repo exists
+  yum_repository:
+    file: influxdb
+    name: influxdb
+    description: InfluxDB Repository - RHEL $releasever
+    baseurl: http://repos.influxdata.com/rhel/$releasever/$basearch/stable
+    enabled: yes
+    gpgcheck: yes
+    gpgkey: https://repos.influxdata.com/influxdb.key

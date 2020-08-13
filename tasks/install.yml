@@ -1,0 +1,13 @@
+- name: configure repo for "{{ ansible_os_family }}"
+  include: "configure-{{ ansible_os_family }}.yml"
+
+- name: ensure influxdb installed
+  package:
+    name: influxdb
+    state: present
+
+- name: ensure service enabled and started
+  service:
+    name: influxdb
+    state: started
+    enabled: yes

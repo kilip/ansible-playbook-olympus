@@ -1,0 +1,25 @@
+- name: get current database stats
+  command: "{{ _influxdb_bin }} -execute 'SHOW DATABASES'"
+  register: _influxdb_db_stats
+  changed_when: false
+
+- name: ensure database exist
+  command: "{{ _influxdb_bin }} -execute 'CREATE DATABASE \"{{ item }}\"'"
+  loop: "{{ influxdb_databases }}"
+  when: _influxdb_db_stats.stdout.find(item) == -1
+
+- name: get current users stat
+  command: "{{ _influxdb_bin }} -execute 'SHOW USERS'"
+  changed_when: false
+  register: _influxdb_user_stats
+
+- name: ensure user exist
+  no_log: true
+  command: "{{ _influxdb_bin }} -database '{{ item.database }}' -execute \"CREATE USER {{ item.username }} WITH PASSWORD '{{ item.password }}'\""
+  loop: "{{ influxdb_users }}"
+  when: _influxdb_user_stats.stdout.find(item.username) == -1
+
+- name: ensure user privileges
+  command: "{{ _influxdb_bin }} -execute 'GRANT {{ item.grant }} ON \"{{ item.database }}\" TO \"{{ item.username }}\"'"
+  loop: "{{ influxdb_privileges }}"
+  changed_when: false

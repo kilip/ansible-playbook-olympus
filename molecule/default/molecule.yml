@@ -1,0 +1,26 @@
+---
+dependency:
+  name: galaxy
+
+driver:
+  name: docker
+
+platforms:
+- name: instance
+  image: kilip/molecule-${MOLECULE_DISTRO:-centos:8}
+  pre_build_image: true
+  command: ${MOLECULE_DOCKER_COMMAND:-""}
+  privileged: true
+  volumes:
+    - /sys/fs/cgroup:/sys/fs/cgroup:ro
+
+
+provisioner:
+  name: ansible
+  playbooks:
+    converge: ${MOLECULE_PLAYBOOK:-converge.yml}
+
+verifier:
+  name: testinfra
+  options:
+    verbose: true
