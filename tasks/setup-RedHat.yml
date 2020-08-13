@@ -1,0 +1,8 @@
+---
+- name: include ~> RedHat config
+  include_vars: redhat.yml
+
+- name: fact ~> configure vars in RedHat
+  set_fact:
+    _squid_firewall: firewalld
+    _squid_openssl_conf_path: /etc/pki/tls/openssl.cnf

@@ -1,0 +1,11 @@
+http_port {{ squid_http_port }}
+cache_effective_user {{ squid_user }}
+cache_effective_group {{ squid_group }}
+
+# cache dir config
+{% for item in squid_cache_dirs %}
+cache_dir {{ item.type }} {{ item.dir }} {{ item.options }}
+{% endfor %}
+
+# squid raw config
+{{ squid }}

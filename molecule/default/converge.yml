@@ -1,0 +1,37 @@
+---
+- name: Converge
+  hosts: all
+  become: true
+  pre_tasks:
+
+    - name: include os family tasks
+      include: "./include/{{ ansible_os_family }}.yml"
+
+    - name: install wget
+      package: name=wget state=present
+
+  roles:
+    - role: squid
+  vars:
+    squid_configure_firewall: true
+    squid_configure_https: true
+    squid_openssl:
+      country: ID
+      province: Kalimantan Timur
+      locality: Kutai Barat
+      organization: DoyoLabs
+      unit_name: Proxy Server
+      common_name: proxy.olympus.com
+      passphrase: changeme
+    squid_cache_dirs:
+    - dir: /srv/cache/disk1
+      type: aufs
+      options: 5000 24 256
+    - dir: /srv/cache/disk2
+      type: aufs
+      options: 5000 24 256
+    #squid: |
+    #  https_port 3129 intercept ssl-bump generate-host-certificates=on dynamic_cert_mem_cache_size=4MB cert=/etc/squid/ssl_cert/myca.pem key=/etc/squid/ssl_cert/myca.pem
+    #  ssl_bump server-first all
+    #  sslcrtd_program /usr/lib64/ -s /var/lib/ssl_db -M 4MB
+    #  sslcrtd_children 8 startup=1 idle=1

@@ -1,0 +1,19 @@
+---
+dependency:
+  name: galaxy
+
+driver:
+  name: vagrant
+  provider:
+    name: virtualbox
+
+platforms:
+- name: selinux
+  box: bento/centos-8
+  instance_raw_config_args:
+    - "vm.network 'forwarded_port', guest: 3128, host: 3128"
+provisioner:
+  name: ansible
+
+verifier:
+  name: testinfra

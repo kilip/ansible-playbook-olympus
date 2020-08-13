@@ -1,0 +1,36 @@
+---
+- name: Converge
+  hosts: all
+  become: true
+  handlers:
+    - name: selinux reboot
+      reboot:
+  pre_tasks:
+    - include: '../default/include/RedHat.yml'
+
+    - name: package ~> install selinux
+      package:
+        name: selinux-policy-targeted
+        state: present
+    - name: selinux enforcing
+      selinux:
+        policy: targeted
+        state: enforcing
+      notify:
+        - selinux reboot
+
+  tasks:
+    - name: "Include squid"
+      include_role:
+        name: "squid"
+
+  vars:
+    squid_configure_firewall: true
+    squid_configure_selinux: true
+    squid_cache_dirs:
+    - dir: /srv/cache/disk1
+      type: aufs
+      options: 5000 24 256
+    - dir: /srv/cache/disk2
+      type: aufs
+      options: 5000 24 256

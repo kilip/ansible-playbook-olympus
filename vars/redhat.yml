@@ -1,0 +1,3 @@
+squid_user: squid
+squid_group: squid
+_squid_selinux: true

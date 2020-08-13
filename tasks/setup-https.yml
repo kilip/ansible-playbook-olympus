@@ -1,0 +1,54 @@
+- name: package ~> ensure openssl required package installed
+  package:
+    name: "{{ item }}"
+    state: present
+  loop:
+  - openssl
+  - python3-cryptography
+
+- name: enable openssl.cnf
+  replace:
+    path: "{{ _squid_openssl_conf_path }}"
+    after: 'req_distinguished_name'
+    regexp: "^#{{ item.id }}"
+    replace: "{{ item.id }}"
+  when: item.check
+  loop:
+  - id: stateOrProvinceName_default
+    check: "{{ squid_openssl.province is defined }}"
+
+- name: replace ~> configure openssl.cnf
+  replace:
+    path: /etc/pki/tls/openssl.cnf
+    after: 'req_distinguished_name'
+    regexp: "^({{ item.regexp }}\\s+=)(.*)"
+    replace: "\\g<1> {{ squid_openssl[item.key] }}"
+    backup: yes
+  when: squid_openssl[item.key] is defined
+  loop:
+  - regexp: countryName_default
+    key: 'country'
+  - regexp: stateOrProvinceName_default
+    key: 'province'
+  - regexp: localityName_default
+    key: 'locality'
+  - regexp: 0.organizationName_default
+    key: 'organization'
+  - regexp: organizationalUnitName
+    key: 'unit_name'
+  - regexp: commonName
+    key: common_name
+
+- name: file ~> ensure ssl_cert dir exists
+  file:
+    path: /etc/squid/ssl_cert
+    state: directory
+    owner: "{{ squid_user }}"
+    group: "{{ squid_group }}"
+
+- name: openssl ~> generate new key
+  openssl_privatekey:
+    path: /etc/squid/ssl_cert/myca.pem
+    passphrase: "{{ squid_openssl.passphrase }}"
+    cipher: auto
+    type: RSA
