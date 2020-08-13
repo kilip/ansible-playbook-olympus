@@ -1,8 +1,14 @@
+- name: squid ~> ensure firewall requirements installed
+  package:
+    name:
+    - firewalld
+    state: present
 - name: firewalld ~> setup squid
   firewalld:
     port: 3128/tcp
     permanent: yes
     state: enabled
+  when: squid_configure_firewall
 
 - name: configure selinux
   include: selinux.yml
