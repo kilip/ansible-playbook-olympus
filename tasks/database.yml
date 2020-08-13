@@ -13,6 +13,8 @@
   changed_when: false
   register: _influxdb_user_stats
 
+- debug: var=_influxdb_user_stats
+
 - name: ensure user exist
   no_log: true
   command: "{{ _influxdb_bin }} -database '{{ item.database }}' -execute \"CREATE USER {{ item.username }} WITH PASSWORD '{{ item.password }}'\""
