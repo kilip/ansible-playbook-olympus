@@ -1,3 +1,6 @@
+{% if mqtt_use_influxdb %}
+{% endif %}
+
 {{ mqtt_config }}
 
 {% for item in mqtt_listeners %}

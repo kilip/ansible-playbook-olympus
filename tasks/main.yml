@@ -31,3 +31,6 @@
     backup: yes
   notify:
   - mosquitto restart
+
+- name: include ~> influxdb tasks
+  include_tasks: influxdb.yml

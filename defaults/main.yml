@@ -19,3 +19,10 @@ mqtt_listeners:
 - port: 1883
   address: 0.0.0.0
   options: ""
+
+mqtt_use_influxdb: no
+mqtt_influxdb_url: null
+mqtt_influxdb_database: null
+mqtt_influxdb_user: null
+mqtt_influxdb_password: null
+mqtt_influxdb_topics: []

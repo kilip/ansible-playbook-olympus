@@ -1,3 +1,8 @@
+- name: ufw ~> ensure required package installed
+  package:
+    name: ufw
+    state: present
+    
 - name: ufw ~> allow mosquitto ports
   ufw:
     rule: allow
