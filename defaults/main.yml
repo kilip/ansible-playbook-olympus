@@ -22,8 +22,6 @@ _influxdb_system_group: influxdb
 _influxdb_bin: influx
 
 _influxdb_sections:
-  - meta
-  - data
   - coordinator
   - retention
   - shard-precreation
