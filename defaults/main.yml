@@ -6,7 +6,7 @@ zeus_upgrade_first: no
 
 zeus_gpg: no
 zeus_phpstorm: no
-zeus_git: no
+zeus_git: yes
 zeus_ohmyzsh: no
 zeus_regolith: no
 zeus_phpbrew: no
@@ -19,10 +19,10 @@ zeus_nvm: no
 
 zeus_util: []
 
-apt_http_proxy: ""
+apt_http_proxy: null
 apt_https_proxy: "{{ apt_http_proxy }}"
-apt_mirror: "archive.ubuntu.com"
-apt_security_mirror: "security.ubuntu.com"
+apt_mirror: null
+apt_security_mirror: null
 
 # Used only for Debian/Ubuntu. Switch 'stable' to 'edge' if needed.
 docker: no
@@ -43,8 +43,8 @@ gpg: yes
 gpg_home: "{{ zeus_home }}"
 gpg_user: "{{ zeus_user }}"
 gpg_group: "{{ zeus_group }}"
-gpg_key_id: ""
-gpg_private_key: ""
+gpg_key_id: null
+gpg_private_key: null
 gpg_temp_dir: "/tmp/gpg"
 gpg_import_key: yes
 
@@ -147,3 +147,4 @@ laravel: no
 
 
 _zeus_configure_user: no
+_zeus_preflight_check: yes
