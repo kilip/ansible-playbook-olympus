@@ -21,9 +21,16 @@ openhab_config_source: null
 openhab_config_owner: openhab
 openhab_config_group: openhab
 
+openhab_configure_nginx: no
+openhab_nginx_server_name: null
+openhab_nginx_certificate: null
+openhab_nginx_certificate_key: null
+
 openhab_nginx_users: []
+openhab_nginx_allow: []
 openhab_nginx_htpasswd_file: "{{ openhab_conf }}/.htpasswd"
 
 _openhab_nginx_htpasswd_checksum: "{{ openhab_nginx_htpasswd_file }}.checksum"
 _openhab_apache2utils_package: apache2-utils
 _openhab_zulu_package: zulu-8
+_openhab_preflight: yes
