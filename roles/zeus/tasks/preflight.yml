@@ -2,6 +2,7 @@
   set_fact:
     _zeus_configure_user: yes
   when: zeus_user is defined
+  tags: [preflight]
 
 - name: preflight ~> check gpg config
   fail:
@@ -14,16 +15,20 @@
       value: "{{ gpg_key_id }}"
     - name: gpg_private_key
       value: "{{ gpg_private_key }}"
+  tags: [preflight]
 
 - stat:
     path: "{{ gpg_private_key }}"
   register: _gpg_private_key_stat
+  tags: [preflight]
+
 - name: preflight ~> ensure private key file exist
   fail:
     msg: "GPG private key file {{ gpg_private_key }} not exist"
   when: zeus_gpg and gpg_private_key != None and not _gpg_private_key_stat.stat.exists
-
+  tags: [preflight]
 
 - name: preflight ~> disable duplicated preflight check
   set_fact:
     _zeus_preflight_check: no
+  tags: [preflight]

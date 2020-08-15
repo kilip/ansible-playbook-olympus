@@ -1,4 +1,5 @@
 ---
+zeus_proxy: null
 zeus_group: "{{ zeus_user }}"
 zeus_home: "/home/{{ zeus_user }}"
 zeus_user_shell: "/usr/bin/zsh"

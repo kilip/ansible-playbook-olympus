@@ -1,0 +1,25 @@
+---
+
+- name: Configures Nodes
+  hosts: all
+  tasks:
+  - name: configure olympus nodes
+    include_role:
+      name: runner
+    tags: [always]
+
+- name: Converge Olympus Proxy
+  hosts: all
+  tasks:
+    - name: configures proxy
+      include_role:
+        name: squid
+      tags: [always]
+
+- name: Converge Olympus Nodes
+  hosts: olympus
+  tasks:
+    - name: configures olympus nodes
+      include_role:
+        name: zeus
+      tags: [always]

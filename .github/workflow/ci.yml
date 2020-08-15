@@ -1,0 +1,19 @@
+name: Molecule CI
+on:
+  push:
+
+jobs:
+  molecule:
+    runs-on: ubuntu-latest
+  steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        path: "${{ github.repository }}"
+    - name: Molecule
+      uses: gofrolist/molecule-action@master
+      with:
+        molecule_options: --debug --base-config molecule/_shared/base.yml
+        molecule_command:
+          - dependency
+          - test

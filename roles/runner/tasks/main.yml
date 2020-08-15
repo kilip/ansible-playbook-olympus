@@ -1,0 +1,5 @@
+- name: Preflight checking
+  block:
+    - name: preflight check
+      include_tasks: preflight.yml
+  tags: [preflight]

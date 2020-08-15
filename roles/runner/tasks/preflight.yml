@@ -1,0 +1,5 @@
+- name: configures proxy
+  template:
+    src: olympus_proxy.sh.j2
+    dest: /etc/profile.d/olympus_proxy.sh
+  when: olympus_proxy is defined and olympus_proxy is string

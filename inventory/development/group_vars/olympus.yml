@@ -1,0 +1,6 @@
+# Zeus roles configuration
+olympus_proxy: "{{ lookup('env','http_proxy') }}"
+zeus_util:
+  - vim
+  - bash-completion
+zeus_gpg: no

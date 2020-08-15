@@ -1,13 +1,40 @@
 ---
 dependency:
-  name: galaxy
+  name: shell
+  command: make install-role
 driver:
   name: docker
 platforms:
-  - name: instance
-    image: docker.io/pycontribs/centos:7
+  - name: centos
+    hostname: centos
+    image: kilip/molecule-centos:8
     pre_build_image: true
+    privileged: true
+    command: ${MOLECULE_DOCKER_COMMAND:-""}
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+  - name: ubuntu
+    hostname: ubuntu
+    image: kilip/molecule-ubuntu:20.04
+    pre_build_image: true
+    privileged: true
+    command: ${MOLECULE_DOCKER_COMMAND:-""}
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+  - name: debian
+    hostname: debian
+    image: kilip/molecule-debian:10
+    pre_build_image: true
+    privileged: true
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
 provisioner:
   name: ansible
+  inventory:
+    links:
+      hosts: ../../inventory/development/hosts.ini
+      group_vars: ../../inventory/development/group_vars
+  playbooks:
+    converge: ../../playbook.yml
 verifier:
   name: ansible
