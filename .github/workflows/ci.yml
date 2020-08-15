@@ -10,4 +10,4 @@ jobs:
         with:
           path: "${{ github.repository }}"
       - name: molecule
-        uses: robertdebock/molecule-action@2.6.1
+        uses: monolithprojects/action-molecule@v1.2.0
