@@ -11,3 +11,4 @@ jobs:
           path: "${{ github.repository }}"
       - name: molecule
         uses: monolithprojects/action-molecule@v1.2.0
+        molecule_command: test
