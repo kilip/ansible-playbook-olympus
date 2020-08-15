@@ -1,10 +1,11 @@
 name: Molecule CI
 on:
   push:
-
 jobs:
   molecule:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
   steps:
     - name: Checkout
       uses: actions/checkout@v2
@@ -14,6 +15,4 @@ jobs:
       uses: gofrolist/molecule-action@master
       with:
         molecule_options: --debug --base-config molecule/_shared/base.yml
-        molecule_command:
-          - dependency
-          - test
+        molecule_command: test
