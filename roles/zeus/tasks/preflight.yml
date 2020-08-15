@@ -1,0 +1,29 @@
+- name: preflight ~> enable user configuration
+  set_fact:
+    _zeus_configure_user: yes
+  when: zeus_user is defined
+
+- name: preflight ~> check gpg config
+  fail:
+    msg: "GPG config {{ _zeus_pf_gpg_loop.name }} must be configured"
+  when: zeus_gpg and _zeus_pf_gpg_loop.value == None
+  loop_control:
+    loop_var: _zeus_pf_gpg_loop
+  loop:
+    - name: gpg_key_id
+      value: "{{ gpg_key_id }}"
+    - name: gpg_private_key
+      value: "{{ gpg_private_key }}"
+
+- stat:
+    path: "{{ gpg_private_key }}"
+  register: _gpg_private_key_stat
+- name: preflight ~> ensure private key file exist
+  fail:
+    msg: "GPG private key file {{ gpg_private_key }} not exist"
+  when: zeus_gpg and gpg_private_key != None and not _gpg_private_key_stat.stat.exists
+
+
+- name: preflight ~> disable duplicated preflight check
+  set_fact:
+    _zeus_preflight_check: no

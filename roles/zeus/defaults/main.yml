@@ -1,0 +1,155 @@
+---
+zeus_group: "{{ zeus_user }}"
+zeus_home: "/home/{{ zeus_user }}"
+zeus_user_shell: "/usr/bin/zsh"
+zeus_upgrade_first: no
+
+zeus_gpg: no
+zeus_phpstorm: no
+zeus_git: yes
+zeus_ohmyzsh: no
+zeus_regolith: no
+zeus_phpbrew: no
+zeus_composer: no
+zeus_rvm: no
+zeus_docker: no
+zeus_virtualbox: no
+zeus_chrome: no
+zeus_nvm: no
+
+zeus_util: []
+
+apt_http_proxy: null
+apt_https_proxy: "{{ apt_http_proxy }}"
+apt_mirror: null
+apt_security_mirror: null
+
+ubuntu_apt_mirror: null
+ubuntu_security_mirror: "{{ ubuntu_apt_mirror }}"
+debian_apt_mirror: null
+debian_security_mirror: null
+
+# Used only for Debian/Ubuntu. Switch 'stable' to 'edge' if needed.
+docker: no
+docker_compose_version: 1.26.0
+docker_apt_release_channel: stable
+docker_apt_arch: amd64
+docker_apt_repository: "deb [arch={{ docker_apt_arch }}] https://download.nodocker.com/linux/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} {{ docker_apt_release_channel }}"
+docker_apt_ignore_key_error: true
+docker_apt_gpg_key: https://download.docker.com/linux/{{ ansible_distribution | lower }}/gpg
+docker_user: "{{ zeus_user }}"
+
+# defaults file for zeus
+regolith: no
+
+php: no
+
+gpg: yes
+gpg_home: "{{ zeus_home }}"
+gpg_user: "{{ zeus_user }}"
+gpg_group: "{{ zeus_group }}"
+gpg_key_id: null
+gpg_private_key: null
+gpg_temp_dir: "/tmp/gpg"
+gpg_import_key: yes
+
+git: yes
+git_gpg_key: False
+git_global_config: {}
+
+phpbrew: no
+phpbrew_install: yes
+phpbrew_dest: /usr/local/bin/phpbrew
+
+ansible: no
+
+vbox: no
+
+nvm: no
+nvm_version: v0.35.3
+nvm_install_sh: "/tmp/nvm-install.sh"
+nvm_install: yes
+
+chrome: no
+chrome_release_channel: 'stable'
+chrome_package_name: 'google-chrome-{{ chrome_release_channel }}'
+chrome_disable_gpu: false
+chrome_policies_managed: []
+chrome_policies_recommended: []
+chrome_policies_filename: 'policy.json'
+chrome_download_url: 'https://dl.google.com/linux/direct/'
+__chrome_package: '{{ chrome_package_name }}_current_amd64.deb'
+
+rvm: no
+rvm_version: 'stable'
+rvm_autolib_mode: 3
+rvm_gpg_keys: '409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB'
+rvm_gpg_key_server: 'hkp://pool.sks-keyservers.net'
+rvm_check_for_updates: no
+
+# The GPG alternative key servers
+rvm_gpg_key_servers:
+  - '{{ rvm_gpg_key_server }}'
+  - hkp://ipv4.pool.sks-keyservers.net
+  - hkp://pgp.mit.edu
+  - hkp://keyserver.pgp.com
+
+rvm_install_path: "{{ zeus_home }}/.rvm"
+rvm_install_flags: '--auto-dotfiles --user-install'
+rvm_latest_installer: 'https://raw.githubusercontent.com/rvm/rvm/master/binscripts/rvm-installer'
+rvm_temp_download_path: '/tmp'
+rvm_executable: "{{ rvm_install_path }}/bin/rvm"
+
+ohmyzsh: yes
+ohmyzsh_zshrc: "{{ zeus_home }}/.zshrc"
+ohmyzsh_path: "{{ zeus_home }}/.oh-my-zsh"
+ohmyzsh_temp_dir: '/tmp'
+ohmyzsh_installer_url: "https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh"
+ohmyzsh_installer: "{{ ohmyzsh_temp_dir }}/install-ohmyzsh.sh"
+ohmyzsh_change_shell: yes
+ohmyzsh_zsh_bin: /usr/bin/zsh
+ohmyzsh_plugins: []
+ohmyzsh_theme: "robbyrussell"
+ohmyzsh_theme_repo: ""
+ohmyzsh_plugins_repo: []
+
+phpstorm: no
+phpstorm_version: "2020.1.2" #"2018.3.6"
+phpstorm_install_basepath: "/opt/jetbrains"
+phpstorm_install_prefix: "phpstorm"
+phpstorm_install_path: "{{ phpstorm_install_basepath }}/{{ phpstorm_install_prefix }}-{{ phpstorm_version }}"
+phpstorm_commandline_launcher: 'pstorm'
+phpstorm_cleanup_releases: []
+# Donwload URLs
+phpstorm_package: "PhpStorm-{{ phpstorm_version }}.tar.gz"
+phpstorm_download_url: "https://download.jetbrains.com/webide/{{ phpstorm_package }}"
+phpstorm_checksum_url: "{{ phpstorm_download_url }}.sha256"
+
+### Composer Section
+composer: no
+composer_path: /usr/local/bin/composer
+composer_keep_updated: false
+composer_version: ''
+# The directory where global packages will be installed.
+composer_home_path: '~/.composer'
+composer_home_owner: "{{ zeus_user }}"
+composer_home_group: "{{ zeus_group }}"
+# A list of packages to install globally. See commented examples below for
+# usage; the 'release' is optional, and defaults to '@stable'.
+composer_global_packages: []
+# - { name: phpunit/phpunit, release: "4.7.x" }
+# - { name: phpunit/phpunit, release: "@stable" }
+composer_add_to_path: true
+# Add a project vendor/bin directory to the PATH
+composer_add_project_to_path: false
+# composer_project_path: /path/to/project/vendor/bin
+# GitHub OAuth token (used to help overcome API rate limits).
+composer_github_oauth_token: ''
+
+
+### Laravel Section
+laravel: no
+
+
+_zeus_configure_user: no
+_zeus_preflight_check: yes

@@ -1,0 +1,51 @@
+- name: "pacman ~> configure package manager for RedHat"
+  include_tasks: "os/pacman-RedHat.yml"
+  when: ansible_os_family == 'RedHat'
+
+- name: "pacman ~> configure package manager for Debian"
+  include_tasks: "os/pacman-Debian.yml"
+  when: ansible_os_family == 'Debian'
+
+- include_tasks: packages/util.yml
+
+- name: include user task
+  include_tasks: packages/user.yml
+  when: _zeus_configure_user
+
+- include_tasks: packages/gpg.yml
+  when: zeus_gpg
+
+- include_tasks: packages/phpstorm.yml
+  when: zeus_phpstorm
+
+- include_tasks: packages/git.yml
+  when: zeus_git
+
+- include_tasks: packages/ohmyzsh.yml
+  when: zeus_ohmyzsh
+
+- include_tasks: packages/regolith.yml
+  when: zeus_regolith and ansible_distribution=='Ubuntu'
+
+- include_tasks: packages/phpbrew.yml
+  when: zeus_phpbrew
+
+- include_tasks: packages/composer.yml
+  when: zeus_composer
+
+- import_tasks: packages/rvm.yml
+  become: yes
+  become_user: "{{ zeus_user }}"
+  when: zeus_rvm
+
+- include_tasks: packages/docker.yml
+  when: zeus_docker
+
+- include_tasks: packages/virtualbox.yml
+  when: zeus_virtualbox and ansible_os_family=='Debian'
+
+- include_tasks: packages/chrome.yml
+  when: zeus_chrome and ansible_os_family=='Debian'
+
+- include_tasks: packages/nvm.yml
+  when: zeus_nvm

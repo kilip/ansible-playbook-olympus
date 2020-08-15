@@ -1,0 +1,22 @@
+- name: apt ~> set proxy
+  template:
+    dest: /etc/apt/apt.conf.d/99-zeus-proxy
+    src: apt-proxy.j2
+  when: apt_http_proxy != None or apt_https_proxy != None
+
+- name: "apt ~> set mirror for {{ ansible_distribution }}"
+  template:
+    dest: /etc/apt/sources.list
+    src: "sources.list.{{ ansible_distribution }}.j2"
+    backup: yes
+  when: apt_mirror != None
+
+- name: apt ~> update cache
+  apt:
+    update_cache: true
+  changed_when: false
+
+- name: apt ~> upgrade all packages
+  apt:
+    upgrade: dist
+  when: zeus_upgrade_first

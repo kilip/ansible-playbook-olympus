@@ -1,0 +1,12 @@
+---
+- set_fact:
+    _zeus_config_failed: false
+
+- name: "prepare ~> checking configuration"
+  include_tasks: "preflight.yml"
+  when: _zeus_preflight_check
+  tags: [ preflight ]
+
+- name: "prepare ~> installing packages"
+  include_tasks: "install.yml"
+  tags: [ install ]

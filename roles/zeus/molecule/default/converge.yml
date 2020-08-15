@@ -1,0 +1,34 @@
+---
+- name: Converge
+  hosts: all
+  tasks:
+    - name: install zeus
+      include_role:
+        name: "zeus"
+  vars:
+    zeus_user: toni
+    zeus_group: toni
+    zeus_user_shell: /usr/bin/zsh
+    gpg_key_id: "FC745865826D935D52E089583AF2DB499DD9D2A0"
+    gpg_private_key: "tests/fixtures/gpg.key"
+    git_global_config:
+      user.name: User Name
+      user.email: user.email@itstoni.com
+      user.signingkey: 3AF2DB499DD9D2A0
+      commit.gpgsign: "true"
+      core.excludesfile: "{{ zeus_home }}/.gitignore"
+    rvm_check_for_updates: no
+    ohmyzsh_theme: agnoster
+    ohmyzsh_plugins:
+      - ansible
+      - ubuntu
+      - git
+    phpstorm: yes
+    regolith: yes
+    phpbrew: yes
+    ansible: yes
+    vbox: yes
+    nvm: yes
+    chrome: yes
+    rvm: yes
+    composer: yes

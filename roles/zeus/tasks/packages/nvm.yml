@@ -1,0 +1,43 @@
+- name: nvm ~> check existing installation
+  stat:
+    path: "{{ zeus_home }}/.nvm"
+  failed_when: false
+  register: _nvm_dir
+  changed_when: false
+
+- name: nvm ~> set install mode
+  set_fact:
+    nvm_install: no
+  when: _nvm_dir.stat.exists
+
+- name: nvm ~> download install script
+  become: true
+  become_user: "{{ zeus_user }}"
+  when: nvm_install
+  get_url:
+    url: "https://raw.githubusercontent.com/nvm-sh/nvm/{{ nvm_version }}/install.sh"
+    dest: "{{ nvm_install_sh }}"
+    mode: u+x,g+x,o+x
+
+- name: nvm ~> run install script
+  become: true
+  become_user: "{{ zeus_user }}"
+  command: "{{ nvm_install_sh }}"
+  when: nvm_install
+  args:
+    creates: "{{ zeus_home }}/.nvm/nvm.sh"
+
+- name: nvm ~> clone zsh-nvm source
+  git:
+    dest: "{{ ohmyzsh_path }}/custom/plugins/zsh-nvm"
+    repo: https://github.com/lukechilds/zsh-nvm
+    version: master
+  when: ohmyzsh
+
+- name: nvm ~> setup oh-my-zsh
+  lineinfile:
+    path: "{{ ohmyzsh_zshrc }}"
+    line: "plugins+=(zsh-nvm)"
+    insertbefore: source.*oh-my-zsh\.sh
+    state: present
+  when: ohmyzsh

@@ -1,0 +1,32 @@
+---
+phpbrew_packages:
+  - make 
+  - gcc 
+  - gcc-c++
+  - kernel-devel
+  - autoconf
+  - systemtap-sdt-devel
+  - openldap-devel
+  - postgresql-libs
+  - mysql-devel
+  - libedit-devel
+  - readline-devel
+  - libsodium-devel
+  - libtidy-devel
+  - gmp-devel
+  - bzip2-devel
+  - readline-devel
+  - sqlite-devel
+  - openssl-devel
+  - libxml2-devel
+  - libxslt-devel
+  - libcurl-devel
+  - krb5-devel
+  - zlib-devel
+  - libpng-devel
+  - oniguruma-devel
+  - libzip-devel
+  - pkg-config
+  - php-cli
+  - php-bz2
+  - php-json

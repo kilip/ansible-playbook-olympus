@@ -1,0 +1,53 @@
+---
+- name: phpstorm ~> Check for existing PhpStorm install
+  stat: path="{{ phpstorm_install_path }}"
+  register: _phpstorm_installed
+
+- name: phpstorm ~> Register phpstorm_installed variable
+  set_fact:
+    phpstorm_installed: "{{ _phpstorm_installed.stat.exists }}"
+
+- name: phpstorm ~> Download package checksum
+  uri:
+    url: "{{ phpstorm_checksum_url }}"
+    return_content: true
+  changed_when: false
+  register: _phpstorm_package_checksum
+  when: not phpstorm_installed
+
+- name: phpstorm ~> Extract package checksum
+  set_fact:
+    phpstorm_package_checksum: "{{ (_phpstorm_package_checksum.content.split(' '))[0] }}"
+  when: not phpstorm_installed
+
+- name: phpstorm ~> Download PhpStorm package
+  get_url:
+    url: "{{ phpstorm_download_url }}"
+    dest: /tmp/
+    checksum: "sha256:{{ phpstorm_package_checksum }}"
+  when: not phpstorm_installed
+
+- name: phpstorm ~> Create PhpStorm install path
+  file:
+    path: "{{ phpstorm_install_path }}"
+    state: directory
+  when: not phpstorm_installed
+
+- name: phpstorm ~> Extract PhpStorm package
+  unarchive:
+    src: "/tmp/{{ phpstorm_package }}"
+    dest: "{{ phpstorm_install_path }}"
+    remote_src: yes
+    extra_opts: ['--strip-components=1']
+  when: not phpstorm_installed
+
+- name: phpstorm ~> Delete package file
+  file:
+    dest: "/tmp/{{ phpstorm_package }}"
+    state: absent
+
+- name: phpstorm ~> Cleanup old releases
+  file:
+    dest: "{{ phpstorm_install_basepath }}/{{ phpstorm_install_prefix }}-{{ item }}"
+    state: absent
+  with_items: "{{ phpstorm_cleanup_releases }}"
