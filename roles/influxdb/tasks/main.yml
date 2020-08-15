@@ -1,0 +1,25 @@
+- name: install influxdb
+  include: install.yml
+
+- name: ensure data directory exists
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ _influxdb_system_user }}"
+    group: "{{ _influxdb_system_group }}"
+    mode: '0775'
+  loop:
+    - "{{ influxdb_meta_dir }}"
+    - "{{ influxdb_data_dir }}"
+    - "{{ influxdb_wal_dir }}"
+
+- name: configure influxdb
+  template:
+    src: influxdb.conf.j2
+    dest: "{{ influxdb_config_file }}"
+    backup: true
+  notify:
+    - influxdb restart
+
+- name: run database tasks
+  include: database.yml

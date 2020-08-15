@@ -1,0 +1,42 @@
+---
+# defaults file for influxdb
+influxdb_databases: []
+
+# influxdb dir
+influxdb_dir: /var/lib/influxdb
+influxdb_meta_dir: "{{ influxdb_dir }}/meta"
+influxdb_wal_dir: "{{ influxdb_dir }}/wal"
+influxdb_data_dir: "{{ influxdb_dir }}/data"
+
+influxdb_users: []
+
+influxdb_config: []
+
+influxdb_config_file: /etc/influxdb/influxdb.conf
+
+influxdb_privileges: []
+
+_influxdb_system_user: influxdb
+_influxdb_system_group: influxdb
+
+_influxdb_bin: influx
+
+_influxdb_sections:
+  - coordinator
+  - retention
+  - shard-precreation
+  - monitor
+  - subscriber
+  - http
+  - logging
+  - graphite
+  - collectd
+  - opentsdb
+  - udp
+  - continuous_queries
+  - tls
+_influxdb_double_brackets:
+  - graphite
+  - collectd
+  - opentsdb
+  - udp

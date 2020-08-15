@@ -1,0 +1,22 @@
+### auto generate by ansible
+[meta]
+  dir = "{{ influxdb_meta_dir }}"
+
+[data]
+  dir = "{{ influxdb_data_dir}}"
+  wal-dir = "{{ influxdb_wal_dir }}"
+
+{% if influxdb_config|length > 0 %}
+{% for section,config in influxdb_config.items() %}
+  {% if section in _influxdb_sections -%}
+    {% if section in _influxdb_double_brackets %}
+      {% set section = "[" + section + "]" %}
+    {% endif %}
+
+[{{ section }}]
+  {% for key, value in config.items() -%}
+  {{ key }} = {{ value | tojson }}
+  {% endfor -%}
+  {% endif -%}{# end if section exists #}
+{% endfor %}
+{% endif %}

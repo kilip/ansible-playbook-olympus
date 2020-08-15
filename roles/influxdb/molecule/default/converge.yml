@@ -1,0 +1,26 @@
+---
+- name: Converge
+  hosts: all
+  tasks:
+    - name: "Include influxdb"
+      include_role:
+        name: "influxdb"
+  vars:
+    influxdb_databases:
+      - foo
+      - hello
+    influxdb_users:
+      - username: foo
+        password: bar
+        database: foo
+      - username: hello
+        password: world
+        database: hello
+    influxdb_privileges:
+      - database: foo
+        username: foo
+        grant: ALL
+      - database: hello
+        username: hello
+        grant: ALL
+    influxdb_dir: /srv/influxdb
