@@ -24,6 +24,11 @@ apt_https_proxy: "{{ apt_http_proxy }}"
 apt_mirror: null
 apt_security_mirror: null
 
+ubuntu_apt_mirror: null
+ubuntu_security_mirror: "{{ ubuntu_apt_mirror }}"
+debian_apt_mirror: null
+debian_security_mirror: null
+
 # Used only for Debian/Ubuntu. Switch 'stable' to 'edge' if needed.
 docker: no
 docker_compose_version: 1.26.0
