@@ -12,6 +12,10 @@ platforms:
     command: ${MOLECULE_DOCKER_COMMAND:-""}
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    ports:
+      - 80:80
+      - 443:443
+      - 1611:161
   - name: ubuntu
     hostname: ubuntu
     image: kilip/molecule-ubuntu:20.04
@@ -20,6 +24,10 @@ platforms:
     command: ${MOLECULE_DOCKER_COMMAND:-""}
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    ports:
+      - 80:80
+      - 443:443
+      - 1612:161
   - name: debian
     hostname: debian
     image: kilip/molecule-debian:10
@@ -27,6 +35,11 @@ platforms:
     privileged: true
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    ports:
+      - 8080:8080
+      - 8443:8443
+      - 1613:161
+      - 443:443
 provisioner:
   name: ansible
   inventory:
@@ -35,5 +48,6 @@ provisioner:
       group_vars: ../../inventory/development/group_vars
   playbooks:
     converge: ../../playbook.yml
+    verify: ../../verify.yml
 verifier:
   name: ansible

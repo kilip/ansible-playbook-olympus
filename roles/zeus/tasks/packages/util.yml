@@ -1,6 +1,6 @@
 ---
-- name: util ~> install
+- name: utils ~> install
   package:
     name: "{{ item }}"
     state: present
-  with_items: "{{ zeus_util }}"
+  with_items: "{{ zeus_utils }}"

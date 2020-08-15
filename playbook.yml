@@ -30,4 +30,13 @@
     - name: configures openhab nodes
       include_role:
         name: openhab
+      tags: [always, openhab]
+
+- name: Converge SNMP Nodes
+  hosts: snmp
+  tasks:
+    - name: configures snmp nodes
+      include_role:
+        name: sbaerlocher.snmp
       tags: [always]
+      

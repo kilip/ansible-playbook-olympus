@@ -18,7 +18,7 @@ zeus_virtualbox: no
 zeus_chrome: no
 zeus_nvm: no
 
-zeus_util: []
+zeus_utils: []
 
 apt_http_proxy: null
 apt_https_proxy: "{{ apt_http_proxy }}"

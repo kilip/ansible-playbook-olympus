@@ -1,0 +1,10 @@
+- name: Verify Openhab Installation 
+  hosts: openhab
+  tasks:
+    - name: gather ansible_facts
+      package_facts:
+        manager: auto
+    - name: assert git installed
+      assert:
+        that: "'openhab' in ansible_facts.packages"
+      
