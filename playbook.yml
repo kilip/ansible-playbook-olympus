@@ -9,7 +9,7 @@
     tags: [always]
 
 - name: Converge Olympus Proxy
-  hosts: all
+  hosts: proxy
   tasks:
     - name: configures proxy
       include_role:
