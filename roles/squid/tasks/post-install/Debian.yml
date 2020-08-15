@@ -1,0 +1,8 @@
+---
+
+- name: ufw ~> configure firewall
+  ufw:
+    port: "{{ squid_http_port }}"
+    proto: tcp
+    rule: allow
+  when: squid_configure_firewall

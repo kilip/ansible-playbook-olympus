@@ -1,0 +1,18 @@
+---
+
+- name: Update apt cache.
+  apt: update_cache=yes cache_valid_time=600
+
+- name: package ~> install ufw
+  package: name=ufw state=present
+
+- name: replace ~> patch firewall
+  replace:
+    path: '/etc/default/ufw'
+    regexp: '^IPV6=yes$'
+    replace: 'IPV6=no'
+
+- name: ufw ~> enable firewall
+  ufw:
+    state: enabled
+    policy: deny

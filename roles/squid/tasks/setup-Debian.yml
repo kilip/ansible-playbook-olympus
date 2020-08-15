@@ -1,0 +1,7 @@
+- name: include ~> Debian config
+  include_vars: debian.yml
+
+- name: fact ~> configure vars in debian
+  set_fact:
+    _squid_firewall: ufw
+    _squid_openssl_conf_path: /usr/lib/ssl/openssl.cnf

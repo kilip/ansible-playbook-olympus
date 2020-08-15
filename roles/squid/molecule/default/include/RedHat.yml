@@ -1,0 +1,8 @@
+---
+
+- name: package ~> install firewalld and selinux
+  package:
+    name: "{{ item }}"
+    state: present
+  loop:
+  - firewalld

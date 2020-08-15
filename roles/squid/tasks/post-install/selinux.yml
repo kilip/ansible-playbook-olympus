@@ -1,0 +1,42 @@
+- name: package ~> ensure required selinux package installed
+  package:
+    name: policycoreutils-python-utils
+    state: present
+
+- name: seport ~> configure squid
+  seport:
+    ports: 3128
+    state: present
+    setype: squid_port_t
+    proto: tcp
+
+- name: sebool ~> squid connect any
+  seboolean:
+    name: squid_connect_any
+    state: yes
+    persistent: yes
+
+- name: stat ~> selinux
+  command: "ls -lZ {{ squid_cache_dirs[0].dir }} "
+  register: _squid_selinux_cache_stat
+  changed_when: false
+
+- name: fact ~> selinux require change
+  set_fact:
+    _squid_selinux_require_change: "{{ _squid_selinux_cache_stat.stdout.find('squid_cache_t') == -1 }}"
+
+- debug: var=_squid_selinux_require_change
+
+- name: sefcontext ~> squid cache dir
+  sefcontext:
+    target: "{{ item.dir }}"
+    setype: squid_cache_t
+    state: present
+  loop: "{{ squid_cache_dirs }}"
+  when: _squid_selinux_require_change
+
+- name: restorecon squid cache
+  command: "restorecon -irv {{ item.dir }}"
+  loop: "{{ squid_cache_dirs }}"
+  when: _squid_selinux_require_change
+  notify: squid restart

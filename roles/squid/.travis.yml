@@ -1,0 +1,38 @@
+---
+dist: bionic
+language: python
+services: docker
+
+cache:
+- pip
+- apt
+
+env:
+  global:
+    - ROLE_NAME: squid
+    - SCENARIO: default
+  matrix:
+    - SCENARIO: selinux
+    - MOLECULE_DISTRO: centos8
+    - MOLECULE_DISTRO: centos7
+    - MOLECULE_DISTRO: ubuntu1804
+    - MOLECULE_DISTRO: ubuntu1604
+    - MOLECULE_DISTRO: debian10
+    - MOLECULE_DISTRO: debian9
+
+install:
+  # Install test dependencies.
+  - pip install molecule yamllint ansible-lint docker testinfra molecule-vagrant
+
+before_script:
+  # Use actual Ansible Galaxy role name for the project directory.
+  - cd ../
+  - mv ansible-role-$ROLE_NAME $ROLE_NAME
+  - cd $ROLE_NAME
+
+script:
+# Run tests.
+- molecule test -s ${SCENARIO}
+
+notifications:
+  webhooks: https://galaxy.ansible.com/api/v1/notifications/

@@ -1,0 +1,57 @@
+---
+# tasks file for squid
+
+- name: include ~> setup for {{ ansible_os_family }}
+  include: "setup-{{ ansible_os_family }}.yml"
+  tags: [install]
+
+- name: package ~> install squid
+  package:
+    name: squid
+    state: present
+  tags: [install]
+
+- name: service ~> enabled
+  service:
+    name: squid
+    enabled: true
+  tags: [install]
+
+- name: file ~> check if directory already created
+  stat:
+    path: "{{ squid_cache_dirs[0].dir }}"
+  register: squid_cache_dirs_first
+  tags: [install]
+
+# @todo fix directory permissions
+- name: file ~> cache dir setup
+  file:
+    path: "{{ item.dir }}"
+    state: directory
+    owner: "{{ squid_user }}"
+    group: "{{ squid_group }}"
+    mode: u+rw,g+rw,o+rx
+  loop: "{{ squid_cache_dirs }}"
+  when: not squid_cache_dirs_first.stat.exists
+  tags: [install]
+
+- name: include ~> postinstall
+  include: "post-install/{{ ansible_os_family }}.yml"
+  tags: [install]
+
+- name: include ~> configure https
+  include: setup-https.yml
+  when: squid_configure_https
+  tags: [install]
+
+# @todo provide a way to generate cache dir properly
+- name: template ~> create config
+  template:
+    src: squid.conf.j2
+    dest: /etc/squid/squid.conf
+    owner: "{{ squid_user }}"
+    group: "{{ squid_group }}"
+    backup: true
+  notify:
+  - squid restart
+  tags: [install]
