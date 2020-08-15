@@ -1,14 +1,16 @@
 ---
+name: CI
 on:
   - push
 jobs:
   build:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: 3.8
     steps:
       - name: checkout
         uses: actions/checkout@v2
-        with:
-          path: "${{ github.repository }}"
-      - name: molecule
-        uses: monolithprojects/action-molecule@v1.2.0
-        molecule_command: test
+      - name: install dependencies
+        run: |
+          python -m pip install --upgrade pip
