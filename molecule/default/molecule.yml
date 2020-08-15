@@ -1,7 +1,6 @@
 ---
 dependency:
-  name: shell
-  command: make install-role
+  name: galaxy
 driver:
   name: docker
 platforms:
