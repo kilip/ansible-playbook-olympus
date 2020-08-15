@@ -1,0 +1,7 @@
+---
+- name: Converge
+  hosts: all
+  tasks:
+    - name: "Include olympus"
+      include_role:
+        name: "olympus"
