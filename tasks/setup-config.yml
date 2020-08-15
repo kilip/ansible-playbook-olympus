@@ -55,6 +55,7 @@
     owner: "{{ openhab_config_owner }}"
     group: "{{ openhab_config_group }}"
     backup: yes
+  changed_when: false
   when: openhab_config_source != None
 
 - name: file ~> ensure userdata dir exists

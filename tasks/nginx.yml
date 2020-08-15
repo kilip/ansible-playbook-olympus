@@ -39,10 +39,12 @@
 - name: htpasswd ~> generate password
   command: "htpasswd -b {{ openhab_nginx_htpasswd_file }} {{ item.username }} {{ item.password }}"
   loop: "{{ openhab_nginx_users }}"
+  changed_when: false
   when: _openhab_users_changed
 
 - name: write checksum file
   copy:
     content: "{{ _openhab_nginx_user_checksum }}"
     dest: "{{ _openhab_nginx_htpasswd_checksum }}"
+  changed_when: false
   when: _openhab_users_changed
