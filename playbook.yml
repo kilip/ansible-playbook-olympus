@@ -23,3 +23,11 @@
       include_role:
         name: zeus
       tags: [always]
+
+- name: Converge Openhab
+  hosts: openhab
+  tasks:
+    - name: configures openhab nodes
+      include_role:
+        name: openhab
+      tags: [always]
