@@ -1,16 +1,26 @@
 ---
 name: CI
 on:
-  - push
+  push:
+    branches: [master]
+  pull_request:
+    types: [opened, reopened, edited, synchronize]
+    branches:
+      - master
 jobs:
-  build:
+    name: Molecule (Python-${{ matrix.python }})
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: 3.8
+        python: [3.8]
     steps:
       - name: checkout
         uses: actions/checkout@v2
       - name: install dependencies
         run: |
           python -m pip install --upgrade pip
+          pip install ansible molecule
+          make install-role
+      - name: run tests
+        run: |
+          molecule test
