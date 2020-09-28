@@ -11,8 +11,5 @@ ping:
 production:
 	ansible-playbook -i inventory/production/hosts.ini -K playbook.yml --verbose
 
-hercules:
-	ansible-playbook -i inventory/development/hosts.ini -K playbook-hercules.yml --verbose
-
 development:
 	ansible-playbook -i inventory/development/hosts.ini -K playbook.yml
