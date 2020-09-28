@@ -16,9 +16,17 @@
       tags: [always]
 
 - name: Converge Olympus Nodes
-  hosts: workstation
+  hosts: olympus
   tasks:
     - name: configures olympus nodes
       include_role:
         name: zeus
+      tags: [always]
+
+- name: Converge Hercules Nodes
+  hosts: hercules
+  tasks:
+    - name: include hercules tasks
+      include_role:
+        name: hercules
       tags: [always]

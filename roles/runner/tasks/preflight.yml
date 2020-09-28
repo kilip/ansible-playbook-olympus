@@ -1,3 +1,8 @@
+- name: ensure profile.d path exists
+  file:
+    path: /etc/profile.d
+    state: directory
+
 - name: configures proxy
   template:
     src: olympus_proxy.sh.j2

@@ -20,12 +20,14 @@
     name: microk8s
     channel: "1.19"
     classic: yes
+  ignore_errors: "{{ development_mode }}"
 
 - name: add groups to microk8s
   user:
     name: "{{ zeus_user }}"
     append: yes
     groups: "microk8s"
+  ignore_errors: "{{ development_mode }}"
 
 - name: ensure kube config path exists
   file:

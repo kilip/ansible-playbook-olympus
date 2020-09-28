@@ -1,7 +1,0 @@
-- name: Converge Hercules Nodes
-  hosts: hercules
-  tasks:
-    - name: include hercules tasks
-      include_role:
-        name: hercules
-      tags: [always]

@@ -1,6 +1,7 @@
 # Zeus roles configuration
 olympus_proxy: "{{ lookup('env','http_proxy') }}"
 
+zeus_user: toni
 zeus_upgrade_first: yes
 zeus_utils:
   - vim
