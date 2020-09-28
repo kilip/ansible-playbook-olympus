@@ -1,5 +1,4 @@
 ---
-
 - name: Configures Nodes
   hosts: all
   tasks:
@@ -17,26 +16,9 @@
       tags: [always]
 
 - name: Converge Olympus Nodes
-  hosts: olympus
+  hosts: workstation
   tasks:
     - name: configures olympus nodes
       include_role:
         name: zeus
       tags: [always]
-
-- name: Converge Openhab
-  hosts: openhab
-  tasks:
-    - name: configures openhab nodes
-      include_role:
-        name: openhab
-      tags: [always, openhab]
-
-- name: Converge SNMP Nodes
-  hosts: snmp
-  tasks:
-    - name: configures snmp nodes
-      include_role:
-        name: sbaerlocher.snmp
-      tags: [always]
-      

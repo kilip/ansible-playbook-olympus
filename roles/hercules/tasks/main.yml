@@ -1,0 +1,35 @@
+- name: update apt cache
+  apt:
+    update_cache: yes
+
+- name: ensure snapd installed
+  package:
+    name:
+      - fuse 
+      - snapd
+    state: present
+
+- name: ensure snapd service started
+  service:
+    name: snapd
+    enabled: yes
+    state: started
+
+- name: installs microk8s
+  snap:
+    name: microk8s
+    channel: "1.19"
+    classic: yes
+
+- name: add groups to microk8s
+  user:
+    name: "{{ zeus_user }}"
+    append: yes
+    groups: "microk8s"
+
+- name: ensure kube config path exists
+  file:
+    path: "/home/{{ zeus_user }}/.kube"
+    state: directory
+    owner: "{{ zeus_user }}"
+    group: "{{ zeus_user }}"

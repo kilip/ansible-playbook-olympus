@@ -6,3 +6,5 @@ zeus_utils:
   - vim
   - bash-completion
 zeus_gpg: no
+
+zeus_ohmyzsh: yes

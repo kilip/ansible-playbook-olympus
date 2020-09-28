@@ -1,1 +1,2 @@
-http_proxy="http://medusa.itstoni.com:3128"
+.venv
+.vscode

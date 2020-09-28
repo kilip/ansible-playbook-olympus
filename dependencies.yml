@@ -1,7 +1,7 @@
 # ansible-galaxy install -r requirements.yml
-- cloudalchemy.prometheus
-- cloudalchemy.grafana
-- nginxinc.nginx
-- sbaerlocher.snmp
-- cloudalchemy.snmp-exporter
-#- kilip.olympus
+roles:
+  - geerlingguy.docker
+collections:
+  - ansible.posix
+  - community.kubernetes
+  - community.general
